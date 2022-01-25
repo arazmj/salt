@@ -32,6 +32,7 @@ def find_json(raw):
     """
     ret = {}
     lines = __split(raw)
+    empty = False
     for ind, _ in enumerate(lines):
         try:
             working = "\n".join(lines[ind:])
@@ -42,9 +43,11 @@ def find_json(raw):
             ret = json.loads(working)
         except ValueError:
             continue
+        if working.strip():
+            empty = True
         if ret:
             return ret
-    if not ret:
+    if not ret and not empty:
         # Not json, raise an error
         raise ValueError
 
